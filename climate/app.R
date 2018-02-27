@@ -25,17 +25,40 @@ ui <- fluidPage(
    sidebarLayout(
       sidebarPanel(
          h3("Set parameters"),
-         numericInput("alpha", "Alpha value", value = 1.1),
-         numericInput("c_u", "Thermal inertia (upper depth)", value = 421800000),
-         numericInput("c_d", "Thermal inertia (deep depth)", value = 3796200000),
-         numericInput("gamma", "Gamma", value = 1.05),
-         actionButton("plot", "Run calculations"),
+         numericInput("alpha", 
+                      "Alpha value", 
+                      value = 1.1),
+         numericInput("c_u", 
+                      "Thermal inertia (upper depth)", 
+                      value = 421800000),
+         numericInput("c_d", 
+                      "Thermal inertia (deep depth)", 
+                      value = 3796200000),
+         numericInput("gamma", 
+                      "Gamma", value = 1.05),
+         actionButton("plot", 
+                      "Run calculations"),
          br(),
-    
          hr(),
          h3("Project temperature change"),
-         sliderInput("Year", label  = "Single entity climate model", min = 1850, max = 2050, value = 1850, step = 10, animate = TRUE, sep = "", ticks = TRUE),
-         sliderInput("Year_double", label  = "2 layer climate model", min = 1850, max = 2050, value = 1850, step = 10, animate = TRUE, sep = "", ticks = TRUE),
+         sliderInput("Year", 
+                     label  = "Single entity climate model", 
+                     min = 1850, 
+                     max = 2050, 
+                     value = 1850, 
+                     step = 10, 
+                     animate = TRUE, 
+                     sep = "", 
+                     ticks = TRUE),
+         sliderInput("Year_double", 
+                     label  = "2 layer climate model", 
+                     min = 1850, 
+                     max = 2050, 
+                     value = 1850, 
+                     step = 10, 
+                     animate = TRUE, 
+                     sep = "", 
+                     ticks = TRUE),
          tableOutput("done")
       ),
       
@@ -99,16 +122,53 @@ server <- function(input, output) {
         values %>%
         filter(Year <= input$Year_double)
       
-      ggplot() + geom_hline(yintercept = 0, size = 1.5) +
-        geom_hline(yintercept = 2, colour = "red", size = 1.5, linetype = "dashed") +
-        geom_path(aes(x = Year, y = Temperature), data = filtered, stat  = "identity", size = 1.5) +
-        geom_path(aes(x = Year, y = Temperature), data = layer_filtered, size = 1.5, na.rm = TRUE, colour = "blue") + 
-        geom_label_repel(aes(x = tail(Year, 1), y = tail(Temperature, 1), label = round(tail(Temperature, 1), digits = 3)), data = tail(layer_filtered, 1), stat  = "identity", fontface = "bold", color = "blue", nudge_x = 5) +
-        geom_label_repel(aes(x = tail(Year, 1), y = tail(Temperature, 1), label = round(tail(Temperature, 1), digits = 3)), data = tail(filtered, 1), stat  = "identity", fontface = "bold", color = "black", nudge_x = 5) +
-        scale_x_continuous(limits = c(1850, 2050), breaks = c(1850, 1875, 1900, 1925, 1950, 1975, 2000, 2025, 2050)) + 
-        scale_y_continuous(limits = c(-1.5, 12), breaks = c(-2, 0, 2, 4, 6, 8, 10, 12)) +
+      ggplot() + 
+        geom_hline(yintercept = 0,
+                   size = 1.5) +
+        geom_hline(yintercept = 2,
+                   colour = "red",
+                   size = 1.5,
+                   linetype = "dashed") +
+        geom_path(aes(x = Year, y = Temperature),
+                  data = filtered, 
+                  stat  = "identity", 
+                  size = 1.5) +
+        geom_path(aes(x = Year, y = Temperature), 
+                  data = layer_filtered, 
+                  size = 1.5, 
+                  na.rm = TRUE,
+                  colour = "blue") + 
+        geom_label_repel(aes(x = tail(Year, 1),
+                             y = tail(Temperature, 1),
+                             label = round(tail(Temperature, 1), 
+                                           digits = 3)),
+                         data = tail(layer_filtered, 1),
+                         stat  = "identity",
+                         fontface = "bold",
+                         color = "blue",
+                         nudge_x = 5) +
+        geom_label_repel(aes(x = tail(Year, 1), 
+                             y = tail(Temperature, 1),
+                             label = round(tail(Temperature, 1), 
+                                           digits = 3)),
+                         data = tail(filtered, 1),
+                         stat  = "identity",
+                         fontface = "bold",
+                         color = "black",
+                         nudge_x = 5) +
+        scale_x_continuous(limits = c(1850, 2050),
+                           breaks = c(1850, 1875, 1900, 1925, 1950, 1975, 2000, 2025, 2050)) + 
+        scale_y_continuous(limits = c(-1.5, 12),
+                           breaks = c(-2, 0, 2, 4, 6, 8, 10, 12)) +
         ylab(expression(paste("Average global temperature change  "(degree~C)))) +
-        theme(panel.grid = element_blank(), panel.background = element_rect(fill = "white", colour = "black"), axis.text = element_text(size = 17), axis.title.x = element_text(size = 20, margin = margin(12)), axis.title.y = element_text(size = 20, margin = margin(12)))
+        theme(panel.grid = element_blank(),
+              panel.background = element_rect(fill = "white", 
+                                              colour = "black"),
+              axis.text = element_text(size = 17),
+              axis.title.x = element_text(size = 20, 
+                                          margin = margin(12)),
+              axis.title.y = element_text(size = 20, 
+                                          margin = margin(12)))
     }, height = 800, width = 800)
     
   })
