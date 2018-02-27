@@ -109,7 +109,7 @@ server <- function(input, output) {
         scale_y_continuous(limits = c(-1.5, 12), breaks = c(-2, 0, 2, 4, 6, 8, 10, 12)) +
         ylab(expression(paste("Average global temperature change  "(degree~C)))) +
         theme(panel.grid = element_blank(), panel.background = element_rect(fill = "white", colour = "black"), axis.text = element_text(size = 17), axis.title.x = element_text(size = 20, margin = margin(12)), axis.title.y = element_text(size = 20, margin = margin(12)))
-    }, height = 800, width = 800) 
+    }, height = 800, width = 800)
     
   })
   
